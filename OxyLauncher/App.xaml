@@ -4,21 +4,23 @@
              xmlns:local="clr-namespace:OxyLauncher"
              StartupUri = "Views/MainWindow.xaml">
     <Application.Resources>
-        <Style x:Key="{x:Type Button}" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Name="button" Width="48" Height="48" BorderThickness="1" BorderBrush="Gray" Background="Transparent" Margin="5">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="button" Property="Opacity" Value="0.5" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="{x:Type Button}" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="button" Width="48" Height="48" BorderThickness="1" BorderBrush="Gray" Background="Transparent" Margin="5">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="button" Property="Opacity" Value="0.5" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

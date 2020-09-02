@@ -1,5 +1,4 @@
-﻿using Notifications.Wpf;
-using OxyLauncher.Models;
+﻿using OxyLauncher.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,16 +23,12 @@ namespace OxyLauncher
         public static Settings settings { get; set; }
 
         public static List<Applet> Applications { get; set; }
-        public static NotificationManager notificationManager { get; set; }
 
         public App()
         {
             try
             {
                 logstream.Log("LogStream initialized");
-
-                notificationManager = new NotificationManager();
-                logstream.Log("Notifications initialized");
 
                 ReadOrCreateSettings();
                 logstream.Log("Settings initialized");

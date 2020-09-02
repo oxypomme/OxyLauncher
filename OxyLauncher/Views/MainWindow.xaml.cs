@@ -51,12 +51,6 @@ namespace OxyLauncher.Views
                 App.LoadApplets();
                 LoadApplets();
 
-                App.notificationManager.Show(new Notifications.Wpf.NotificationContent
-                {
-                    Title = "Applets rechargé",
-                    Message = $"La liste des applets est maintenant à jour.",
-                    Type = Notifications.Wpf.NotificationType.Information
-                });
                 App.logstream.Log("List reloaded");
             }
             catch (Exception ex) { App.logstream.Error(ex); }

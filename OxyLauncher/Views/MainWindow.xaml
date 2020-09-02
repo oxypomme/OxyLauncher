@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OxyLauncher"
-        xmlns:notifications="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
         mc:Ignorable="d"    MinHeight="299" MinWidth="376"
         Title="OxyLauncher" MaxHeight="0" MaxWidth="0">
     <DockPanel>
@@ -14,7 +13,6 @@
                 </WrapPanel>
             </Border>
         </ScrollViewer>
-        <notifications:NotificationArea x:Name="WindowArea" Position="BottomRight" MaxItems="3" />
     </DockPanel>
     <Window.Background>
         <ImageBrush ImageSource="../background.jpg" Stretch="Uniform" />
