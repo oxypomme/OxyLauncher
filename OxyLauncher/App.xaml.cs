@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using OxyNuggets;
 using OxyNuggets.JSON;
@@ -87,6 +86,6 @@ namespace OxyLauncher
                 Applications.Remove(Applications.Find(a => a.Name.ToLower() == appEx.ToLower()));
         }
 
-        public static ImageSource GetIconFromExe(string path) => Imaging.CreateBitmapSourceFromHIcon(Icon.ExtractAssociatedIcon(path).Handle, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+        public static ImageSource GetIconFromExe(string path) => System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(Icon.ExtractAssociatedIcon(path).Handle, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
     }
 }

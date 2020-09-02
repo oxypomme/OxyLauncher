@@ -16,27 +16,6 @@ namespace OxyLauncher.Controllers
     {
         public static Button CreateAppletButton(Applet app)
         {
-            /*
-            var sp = new StackPanel();
-            sp.Children.Add(new Image()
-            {
-                Source = App.GetIconFromExe(app.ExePath),
-                MaxWidth = 32,
-                MaxHeight = 32
-            });
-            sp.Children.Add(new TextBlock()
-            {
-                Text = app.Name,
-                TextAlignment = TextAlignment.Center
-            });
-
-            var btn = new Button()
-            {
-                Content = sp,
-                Tag = app
-            };
-            */
-
             var btn = new Button()
             {
                 Content = new Image()
