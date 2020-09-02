@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -39,20 +40,33 @@ namespace OxyLauncher.Controllers
             try
             {
                 var app = (Applet)((FrameworkElement)sender).Tag;
-                if (App.settings.CustomApplications.FindIndex(a => a.Equals(app)) == -1)
-                {
-                    App.settings.CustomApplications.Add(app);
-                    OxyNuggets.JSON.JSONSerializer.Serialize(Settings.path, App.settings);
-                    App.logstream.Log($"Custom config added for \"{app}\"");
-                }
-                else
-                    Task.Run(() =>
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    if (App.settings.CustomApplications.FindIndex(a => a.Equals(app)) == -1)
                     {
-                        var notificationManager = new NotificationManager();
-                        notificationManager.ShowAsync(
-                        new NotificationContent { Title = "Configuration déjà existante", Message = $"La configuration de \"{app}\" existe déjà !", Type = NotificationType.Error },
-                        areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
-                    });
+                        App.settings.CustomApplications.Add(app);
+                        OxyNuggets.JSON.JSONSerializer.Serialize(Settings.path, App.settings);
+                        Task.Run(() =>
+                        {
+                            var notificationManager = new NotificationManager();
+                            notificationManager.ShowAsync(
+                            new NotificationContent { Title = "Configuration sauvegardée", Message = $"Vous pouvez modifier la configuration de \"{app}\" depuis le fichier settings.json.", Type = NotificationType.Success },
+                            areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
+                        });
+                        App.logstream.Log($"Custom config added for \"{app}\"");
+                    }
+                    else
+                        Task.Run(() =>
+                        {
+                            var notificationManager = new NotificationManager();
+                            notificationManager.ShowAsync(
+                            new NotificationContent { Title = "Configuration déjà existante", Message = $"La configuration de \"{app}\" existe déjà !", Type = NotificationType.Error },
+                            areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
+                        });
+                else
+                {
+                    Process.Start("explorer.exe", Path.GetDirectoryName(app.ExePath));
+                    App.logstream.Log($"Opening {app} folder");
+                }
             }
             catch (Exception ex) { App.logstream.Error(ex); }
         }

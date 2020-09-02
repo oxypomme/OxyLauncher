@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Notifications.Wpf.Core;
 using OxyLauncher.Controllers;
 
@@ -55,7 +54,7 @@ namespace OxyLauncher.Views
             };
 
             btn.Click += SettingsClicked;
-            btn.MouseRightButtonDown += SettingsSaved;
+            btn.MouseRightButtonDown += SettingsOpen;
             MainList.Children.Add(btn);
 
             foreach (var applet in App.Applications)
@@ -68,17 +67,31 @@ namespace OxyLauncher.Views
             {
                 Process.Start(new ProcessStartInfo(App.settings.Editor)
                 {
-                    Arguments = "\"" + Models.Settings.path + "\"",
+                    Arguments = "\"" + Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), "settings.json") + "\"",
                     RedirectStandardOutput = false,
                     RedirectStandardError = false
                 });
+                App.logstream.Log("Opening settings");
             }
             catch (Exception ex) { App.logstream.Error(ex); }
         }
 
-        private void SettingsSaved(object sender, MouseButtonEventArgs e)
+        private void SettingsOpen(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    Process.Start("explorer.exe", App.settings.AppFolder);
+                    App.logstream.Log("Opening app folder");
+                }
+                else
+                {
+                    Process.Start("explorer.exe", Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location));
+                    App.logstream.Log("Opening launcher folder");
+                }
+            }
+            catch (Exception ex) { App.logstream.Error(ex); }
         }
 
         private void Reload_Click(object sender, RoutedEventArgs e)
