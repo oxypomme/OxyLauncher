@@ -14,12 +14,14 @@ namespace OxyLauncher.Models
         public string AppFolder { get; set; }
         public List<string> Exceptions { get; set; }
         public List<Applet> CustomApplications { get; set; }
+        public string Editor { get; set; }
 
         public Settings(string appPath)
         {
             AppFolder = appPath;
             Exceptions = new List<string>();
             CustomApplications = new List<Applet>();
+            Editor = Environment.GetEnvironmentVariable("windir") + @"\system32\notepad.exe";
         }
     }
 }

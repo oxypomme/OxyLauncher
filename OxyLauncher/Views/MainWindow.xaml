@@ -9,9 +9,12 @@
         Title="OxyLauncher" MaxHeight="0" MaxWidth="0">
     <Grid>
         <DockPanel>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <Border Width="431">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                <Border Grid.Column="0">
                     <WrapPanel Name="MainList" Width="260" HorizontalAlignment="Left">
+                        <d:Button>
+                            <d:Image Source="/Ressources/settings.png" />
+                        </d:Button>
                     </WrapPanel>
                 </Border>
             </ScrollViewer>
@@ -22,6 +25,6 @@
          Position="BottomRight" />
     </Grid>
     <Window.Background>
-        <ImageBrush ImageSource="../background.jpg" Stretch="Uniform" />
+        <ImageBrush ImageSource="../Ressources/background.jpg" Stretch="Uniform" />
     </Window.Background>
 </Window>

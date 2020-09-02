@@ -21,7 +21,7 @@ namespace OxyLauncher.Models
         [JsonIgnore]
         public string ExePath { get => Path.Combine(App.settings.AppFolder, _exepath); set => _exepath = value; }
 
-        public Applet(string path, string name = "", string args = "")
+        public Applet(string path = "", string name = "", string args = "")
         {
             _exepath = path;
             _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(Path.GetRelativePath(App.settings.AppFolder, Path.GetDirectoryName(path)), @"[^a-zA-Z]+", "");
