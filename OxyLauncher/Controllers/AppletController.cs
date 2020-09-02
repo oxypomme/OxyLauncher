@@ -83,7 +83,6 @@ namespace OxyLauncher.Controllers
         {
             try
             {
-                //TODO: Nouveau cmd, moyen de virer la mienne ?
                 Process.Start(new ProcessStartInfo(((Applet)((FrameworkElement)sender).Tag).ExePath)
                 {
                     Arguments = ((Applet)((FrameworkElement)sender).Tag).arguments,
