@@ -16,6 +16,11 @@ Télécharger l'archive, dézippez là, lancer `OxyLauncher.exe` ou via la comma
 dotnet OxyLauncher.dll
 ```
 
+## Développé avec
+
+- [Notifications.Wpf.Core](https://github.com/mjuen/Notifications.Wpf.Core)
+- [Json.NET](https://www.newtonsoft.com/json)
+
 # Utilisation
 
 - Clic gauche pour lancer une application
