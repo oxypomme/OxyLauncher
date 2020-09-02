@@ -30,25 +30,20 @@ namespace OxyLauncher
             {
                 logstream.Log("LogStream initialized");
 
-                ReadOrCreateSettings();
+                // Reading or creating the settings
+                if (File.Exists(Settings.path))
+                    settings = (Settings)JSONSerializer.Deserialize<Settings>(Settings.path);
+                else
+                {
+                    settings = new Settings(Directory.GetParent(Path.GetDirectoryName(Settings.path)).FullName);
+                    JSONSerializer.Serialize(Settings.path, settings);
+                }
                 logstream.Log("Settings initialized");
 
                 LoadApplets();
                 logstream.Log("Ready");
             }
             catch (Exception e) { logstream.Error(e); }
-        }
-
-        public static void ReadOrCreateSettings()
-        {
-            // Reading or creating the settings
-            if (File.Exists(Settings.path))
-                settings = (Settings)JSONSerializer.Deserialize<Settings>(Settings.path);
-            else
-            {
-                settings = new Settings(Directory.GetParent(Path.GetDirectoryName(Settings.path)).FullName);
-                JSONSerializer.Serialize(Settings.path, settings);
-            }
         }
 
         public static void LoadApplets()
@@ -80,7 +75,5 @@ namespace OxyLauncher
             foreach (var appEx in settings.Exceptions)
                 Applications.Remove(Applications.Find(a => a.Name.ToLower() == appEx.ToLower()));
         }
-
-        public static ImageSource GetIconFromExe(string path) => System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(Icon.ExtractAssociatedIcon(path).Handle, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
     }
 }

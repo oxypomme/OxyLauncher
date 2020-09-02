@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Notifications.Wpf.Core;
 using OxyLauncher.Controllers;
 
 namespace OxyLauncher.Views
@@ -52,6 +53,14 @@ namespace OxyLauncher.Views
                 LoadApplets();
 
                 App.logstream.Log("List reloaded");
+
+                Task.Run(() =>
+                {
+                    var notificationManager = new NotificationManager();
+                    notificationManager.ShowAsync(
+                    new NotificationContent { Title = "Applets rechargés", Message = "La liste des applets est maintenant à jour.", Type = NotificationType.Information },
+                    areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
+                });
             }
             catch (Exception ex) { App.logstream.Error(ex); }
         }

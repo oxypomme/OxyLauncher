@@ -28,7 +28,7 @@ namespace OxyLauncher.Models
             arguments = args;
         }
 
-        public override string ToString() => _name;
+        public override string ToString() => Name;
 
         public override bool Equals(object obj)
         {

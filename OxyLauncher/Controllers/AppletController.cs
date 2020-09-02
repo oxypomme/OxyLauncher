@@ -1,10 +1,13 @@
-﻿using OxyLauncher.Models;
+﻿using Notifications.Wpf.Core;
+using Notifications.Wpf.Core.Controls;
+using OxyLauncher.Models;
 using OxyLauncher.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,7 +23,7 @@ namespace OxyLauncher.Controllers
             {
                 Content = new Image()
                 {
-                    Source = App.GetIconFromExe(app.ExePath)
+                    Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(System.Drawing.Icon.ExtractAssociatedIcon(app.ExePath).Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions())
                 },
                 Tag = app,
                 ToolTip = app.Name
@@ -35,12 +38,21 @@ namespace OxyLauncher.Controllers
         {
             try
             {
-                if (App.settings.CustomApplications.FindIndex(a => a.Equals((Applet)((FrameworkElement)sender).Tag)) == -1)
+                var app = (Applet)((FrameworkElement)sender).Tag;
+                if (App.settings.CustomApplications.FindIndex(a => a.Equals(app)) == -1)
                 {
-                    App.settings.CustomApplications.Add((Applet)((FrameworkElement)sender).Tag);
+                    App.settings.CustomApplications.Add(app);
                     OxyNuggets.JSON.JSONSerializer.Serialize(Settings.path, App.settings);
-                    App.logstream.Log($"Custom config added for \"{(Applet)((FrameworkElement)sender).Tag}\"");
+                    App.logstream.Log($"Custom config added for \"{app}\"");
                 }
+                else
+                    Task.Run(() =>
+                    {
+                        var notificationManager = new NotificationManager();
+                        notificationManager.ShowAsync(
+                        new NotificationContent { Title = "Configuration déjà existante", Message = $"La configuration de \"{app}\" existe déjà !", Type = NotificationType.Error },
+                        areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
+                    });
             }
             catch (Exception ex) { App.logstream.Error(ex); }
         }
@@ -49,17 +61,34 @@ namespace OxyLauncher.Controllers
         {
             try
             {
-                Process.Start(new ProcessStartInfo(((Applet)((FrameworkElement)sender).Tag).ExePath)
+                var app = (Applet)((FrameworkElement)sender).Tag;
+                Process.Start(new ProcessStartInfo(app.ExePath)
                 {
-                    Arguments = ((Applet)((FrameworkElement)sender).Tag).arguments,
+                    Arguments = app.arguments,
                     RedirectStandardOutput = false,
                     RedirectStandardError = false
                 });
-                App.logstream.Log($"\"{(Applet)((FrameworkElement)sender).Tag}\" started with \"{((Applet)((FrameworkElement)sender).Tag).arguments}\"");
+
+                Task.Run(() =>
+                {
+                    var notificationManager = new NotificationManager();
+                    notificationManager.ShowAsync(
+                    new NotificationContent { Title = "Applet lancée", Message = $"L'applet \"{app}\" est maintenant lancée.", Type = NotificationType.Success },
+                    areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
+                });
+
+                App.logstream.Log($"\"{app}\" started with \"{app.arguments}\"");
             }
             catch (Exception ex)
             {
                 App.logstream.Error(ex);
+                Task.Run(() =>
+                {
+                    var notificationManager = new NotificationManager();
+                    notificationManager.ShowAsync(
+                    new NotificationContent { Title = "Une erreur est survenue", Message = "", Type = NotificationType.Error },
+                    areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
+                });
             }
         }
     }

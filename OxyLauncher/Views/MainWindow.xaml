@@ -3,17 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:notifications="clr-namespace:Notifications.Wpf.Core.Controls;assembly=Notifications.Wpf.Core"
         xmlns:local="clr-namespace:OxyLauncher"
         mc:Ignorable="d"    MinHeight="299" MinWidth="376"
         Title="OxyLauncher" MaxHeight="0" MaxWidth="0">
-    <DockPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <Border Width="431">
-                <WrapPanel Name="MainList" Width="260" HorizontalAlignment="Left">
-                </WrapPanel>
-            </Border>
-        </ScrollViewer>
-    </DockPanel>
+    <Grid>
+        <DockPanel>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <Border Width="431">
+                    <WrapPanel Name="MainList" Width="260" HorizontalAlignment="Left">
+                    </WrapPanel>
+                </Border>
+            </ScrollViewer>
+        </DockPanel>
+        <notifications:NotificationArea
+         MaxItems="1"
+         x:Name="WindowArea"
+         Position="BottomRight" />
+    </Grid>
     <Window.Background>
         <ImageBrush ImageSource="../background.jpg" Stretch="Uniform" />
     </Window.Background>
