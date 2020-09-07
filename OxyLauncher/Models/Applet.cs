@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel;
 using System.IO;
 
 namespace OxyLauncher.Models
@@ -8,24 +9,45 @@ namespace OxyLauncher.Models
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2235:Mark all non-serializable fields", Justification = "Depuis quand un string est pas sérializable ?")]
     public class Applet
     {
+        [JsonIgnore]
         private string _name;
 
-        [JsonProperty("exe_path")]
-        private string _exepath;
+        [DefaultValue("")]
+        [JsonProperty("exe_path", Required = Required.Always)]
+        public string _exepath;
 
+        [DefaultValue("")]
         [JsonProperty("name")]
         public string Name { get => char.ToUpper(_name[0]) + _name.Substring(1); set => _name = value; }
 
+        [DefaultValue("")]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string arguments { get; set; }
 
         [JsonIgnore]
         public string ExePath { get => Path.Combine(App.settings.AppFolder, _exepath); set => _exepath = value; }
 
-        public Applet(string path = "", string name = "", string args = "")
+        [DefaultValue("")]
+        [JsonProperty("work_path", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        private string _work;
+
+        [JsonIgnore]
+        public string Work_Path { get => !string.IsNullOrEmpty(_work) ? _work : Path.GetDirectoryName(ExePath); set => _work = value; }
+
+        public Applet(string path = "", string name = "", string args = "", string work = "")
         {
-            _exepath = path;
-            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(Path.GetRelativePath(App.settings.AppFolder, Path.GetDirectoryName(path)), @"[^a-zA-Z]+", "");
+            try
+            {
+                _exepath = Path.GetRelativePath(App.settings.AppFolder, path);
+            }
+            catch (Exception e) when (e is NullReferenceException || e is ArgumentNullException)
+            {
+                _exepath = "";
+                App.logstream.Warning(e);
+            }
+            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(Path.GetDirectoryName(_exepath), @"[^a-zA-Z]+", "");
             arguments = args;
+            _work = work;
         }
 
         public override string ToString() => Name;
@@ -33,10 +55,8 @@ namespace OxyLauncher.Models
         public override bool Equals(object obj)
         {
             if (obj is Applet)
-            {
                 if (((Applet)obj)._name.ToLower() == _name.ToLower())
                     return true;
-            }
             return false;
         }
 
@@ -47,9 +67,6 @@ namespace OxyLauncher.Models
             return false;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => base.GetHashCode();
     }
 }

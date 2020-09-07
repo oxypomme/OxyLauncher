@@ -78,7 +78,8 @@ namespace OxyLauncher.Controllers
                 var app = (Applet)((FrameworkElement)sender).Tag;
                 Process.Start(new ProcessStartInfo(app.ExePath)
                 {
-                    Arguments = app.arguments,
+                    Arguments = (string.IsNullOrEmpty(app.arguments) ? "" : app.arguments),
+                    WorkingDirectory = app.Work_Path,
                     RedirectStandardOutput = false,
                     RedirectStandardError = false
                 });

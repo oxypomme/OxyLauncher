@@ -46,6 +46,8 @@ Je vous conseille vivement de le modifier selon vos envies.
 - `Exceptions` représente les noms des applications que vous ne voulez pas afficher (exemple : `"Exceptions": ["cmder","dotnet"]` cachera les applications ayant pour nom `cmder` ou `dotnet`).
 - `CustomApplications` représente les paramètres personnalisées. Utile pour choisir un executable particulier, changer le nom ou rajouter des arguments.
   - `exe_path` représente le chemin **relatif** de l'exécutable **par rapport à `AppFolder`**. (Exemple : `"exe_path": "Teamviewer\\TeamViewer.exe"`)
+  - `arguments` représente les arguments. *Ce paramètre est optionnel*.
+  - `work_path` représente le chemin **absolu** d’exécution. *Ce paramètre est optionnel*.
 - `Editor` représente le chemin **complet** vers l'éditeur pour ouvrir les paramètres.
 
 ## Auteurs

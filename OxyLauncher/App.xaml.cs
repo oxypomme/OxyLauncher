@@ -36,8 +36,8 @@ namespace OxyLauncher
                 else
                 {
                     settings = new Settings(Directory.GetParent(Path.GetDirectoryName(Settings.path)).FullName);
-                    JSONSerializer.Serialize(Settings.path, settings);
                 }
+                JSONSerializer.Serialize(Settings.path, settings);
                 logstream.Log("Settings initialized");
 
                 LoadApplets();
@@ -56,7 +56,7 @@ namespace OxyLauncher
                     foreach (var appPath in appDir.GetFiles())
                         if (appPath.Extension == ".exe" && appPath.Name.ToLower().Contains(System.Text.RegularExpressions.Regex.Replace(appDir.Name.ToLower(), @"[^a-zA-Z]+", "")))
                         {
-                            Applications.Add(new Applet(Path.GetRelativePath(settings.AppFolder, appPath.FullName)));
+                            Applications.Add(new Applet(appPath.FullName));
                             break;
                         }
                 }
@@ -70,7 +70,7 @@ namespace OxyLauncher
                 {
                     Applications[Applications.FindIndex(a => a.Name.ToLower() == appCus.Name.ToLower())] = appCus;
                 }
-                catch (ArgumentOutOfRangeException) { logstream.Error($"Custom app \"{appCus.Name}\" not found"); }
+                catch (ArgumentOutOfRangeException) { logstream.Error($"Custom app \"{appCus.Name}\" not found in {appCus.ExePath}"); }
 
             foreach (var appEx in settings.Exceptions)
                 Applications.Remove(Applications.Find(a => a.Name.ToLower() == appEx.ToLower()));
