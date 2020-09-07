@@ -71,7 +71,7 @@ namespace OxyLauncher.Views
                     RedirectStandardOutput = false,
                     RedirectStandardError = false
                 });
-                App.logstream.Log("Opening settings");
+                App.logstream.Log($"Opening settings with \"{App.settings.Editor}\"");
             }
             catch (Exception ex) { App.logstream.Error(ex); }
         }
@@ -83,12 +83,12 @@ namespace OxyLauncher.Views
                 if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                 {
                     Process.Start("explorer.exe", App.settings.AppFolder);
-                    App.logstream.Log("Opening app folder");
+                    App.logstream.Log($"Opening app folder ({App.settings.AppFolder})");
                 }
                 else
                 {
                     Process.Start("explorer.exe", Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location));
-                    App.logstream.Log("Opening launcher folder");
+                    App.logstream.Log($"Opening launcher folder ({Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)})");
                 }
             }
             catch (Exception ex) { App.logstream.Error(ex); }

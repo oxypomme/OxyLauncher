@@ -65,7 +65,7 @@ namespace OxyLauncher.Controllers
                 else
                 {
                     Process.Start("explorer.exe", Path.GetDirectoryName(app.ExePath));
-                    App.logstream.Log($"Opening {app} folder");
+                    App.logstream.Log($"Opening {app} folder ({Path.GetDirectoryName(app.ExePath)})");
                 }
             }
             catch (Exception ex) { App.logstream.Error(ex); }
@@ -92,7 +92,7 @@ namespace OxyLauncher.Controllers
                     areaName: "WindowArea", expirationTime: TimeSpan.FromSeconds(2));
                 });
 
-                App.logstream.Log($"\"{app}\" started with \"{app.arguments}\"");
+                App.logstream.Log($"\"{app}\" started with \"{app.arguments}\" at \"{app.Work_Path}\"");
             }
             catch (Exception ex)
             {
