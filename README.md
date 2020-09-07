@@ -10,7 +10,7 @@
 
 # Installation
 
-Télécharger l'archive, dézippez là, lancer `OxyLauncher.exe` ou via la commande line :
+Télécharger l'archive, dézippez-la, lancer `OxyLauncher.exe` ou via la commande line :
 
 ```powershell
 dotnet OxyLauncher.dll
