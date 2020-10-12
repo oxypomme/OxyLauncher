@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace OxyLauncher.Models
 {
@@ -18,7 +19,7 @@ namespace OxyLauncher.Models
 
         [DefaultValue("")]
         [JsonProperty("name")]
-        public string Name { get => char.ToUpper(_name[0]) + _name.Substring(1); set => _name = value; }
+        public string Name { get => _name; set => _name = value; }
 
         [DefaultValue("")]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
@@ -45,7 +46,14 @@ namespace OxyLauncher.Models
                 _exepath = "";
                 App.logstream.Warning(e);
             }
-            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(_exepath, @"(.+\\)|((.exe)|[^a-zA-Z ]+)", string.Empty);
+            if (!string.IsNullOrEmpty(name))
+                _name = name;
+            else
+            {
+                string cleanName = Regex.Replace(_exepath, @"(.+\\)|(.exe)|([^a-zA-Z ][^-])+\b", string.Empty);
+                cleanName = Regex.Replace(cleanName, "(-|_)", " ");
+                _name = Regex.Replace(cleanName, @"\b[a-z]", m => m.Value.ToUpper());
+            }
             arguments = args;
             _work = work;
         }

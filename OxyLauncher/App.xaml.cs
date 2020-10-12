@@ -54,13 +54,13 @@ namespace OxyLauncher
             foreach (var appDir in appFolder.GetDirectories())
                 try
                 {
-                    string appDirName = Regex.Replace(appDir.Name.ToLower(), "[^a-z]+", string.Empty);
+                    string appDirName = Regex.Replace(appDir.Name, "[^a-z]+", string.Empty, RegexOptions.IgnoreCase);
                     if (File.Exists(Path.Combine(appDir.FullName, appDirName + ".exe")))
                         Applications.Add(new Applet(Path.Combine(appDir.FullName, appDirName + ".exe")));
                     else
                         foreach (var appPath in appDir.GetFiles("*.exe"))
                         {
-                            string appName = Regex.Replace(appPath.Name.ToLower(), "(\\.exe)|[^a-z]+", string.Empty);
+                            string appName = Regex.Replace(appPath.Name, "(\\.exe)|[^a-z]+", string.Empty, RegexOptions.IgnoreCase);
                             if (appDirName.Contains(appName) || appName.Contains(appDirName))
                             {
                                 Applications.Add(new Applet(appPath.FullName));
@@ -70,7 +70,7 @@ namespace OxyLauncher
                 }
                 catch (UnauthorizedAccessException) { logstream.Error($"Access to the path \"{appDir.Name}\" is denied."); }
 
-            Applications.Sort(Comparer<Applet>.Create((a1, a2) => a1.Name[0].CompareTo(a2.Name[0])));
+            //Applications.Sort(Comparer<Applet>.Create((a1, a2) => a1.Name[0].CompareTo(a2.Name[0])));
 
             settings = (Settings)JSONSerializer.Deserialize<Settings>(Settings.path);
             foreach (var appEx in settings.Exceptions)
