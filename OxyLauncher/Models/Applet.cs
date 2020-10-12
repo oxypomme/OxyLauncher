@@ -45,7 +45,7 @@ namespace OxyLauncher.Models
                 _exepath = "";
                 App.logstream.Warning(e);
             }
-            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(Path.GetDirectoryName(_exepath), @"[^a-zA-Z]+", "");
+            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(Path.GetDirectoryName(_exepath), "[^a-zA-Z]+", string.Empty);
             arguments = args;
             _work = work;
         }
@@ -55,14 +55,14 @@ namespace OxyLauncher.Models
         public override bool Equals(object obj)
         {
             if (obj is Applet)
-                if (((Applet)obj)._name.ToLower() == _name.ToLower())
+                if (string.Equals(((Applet)obj)._name, _name, StringComparison.CurrentCultureIgnoreCase))
                     return true;
             return false;
         }
 
         public static bool Equals(Applet app1, Applet app2)
         {
-            if (app1._name.ToLower() == app2._name.ToLower())
+            if (string.Equals(app1._name, app2._name, StringComparison.CurrentCultureIgnoreCase))
                 return true;
             return false;
         }

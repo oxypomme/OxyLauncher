@@ -56,8 +56,8 @@ namespace OxyLauncher
                 {
                     foreach (var appPath in appDir.GetFiles())
                     {
-                        string appName = Regex.Replace(appPath.Name.ToLower(), @"[^a-zA-Z]+", "");
-                        if (appPath.Extension == ".exe" && appName.Contains(Regex.Replace(appDir.Name.ToLower(), @"[^a-zA-Z]+", "")))
+                        string appName = Regex.Replace(appPath.Name.ToLower(), "[^a-z]+", string.Empty);
+                        if (appPath.Extension == ".exe" && appName.Contains(Regex.Replace(appDir.Name.ToLower(), "[^a-z]+", string.Empty)))
                         {
                             Applications.Add(new Applet(appPath.FullName));
                             break;
