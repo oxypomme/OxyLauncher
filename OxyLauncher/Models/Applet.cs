@@ -45,7 +45,7 @@ namespace OxyLauncher.Models
                 _exepath = "";
                 App.logstream.Warning(e);
             }
-            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(Path.GetDirectoryName(_exepath), "[^a-zA-Z]+", string.Empty);
+            _name = !string.IsNullOrEmpty(name) ? name : System.Text.RegularExpressions.Regex.Replace(_exepath, @"(.+\\)|((.exe)|[^a-zA-Z ]+)", string.Empty);
             arguments = args;
             _work = work;
         }

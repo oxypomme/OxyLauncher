@@ -54,30 +54,34 @@ namespace OxyLauncher
             foreach (var appDir in appFolder.GetDirectories())
                 try
                 {
-                    foreach (var appPath in appDir.GetFiles())
-                    {
-                        string appName = Regex.Replace(appPath.Name.ToLower(), "[^a-z]+", string.Empty);
-                        if (appPath.Extension == ".exe" && appName.Contains(Regex.Replace(appDir.Name.ToLower(), "[^a-z]+", string.Empty)))
+                    string appDirName = Regex.Replace(appDir.Name.ToLower(), "[^a-z]+", string.Empty);
+                    if (File.Exists(Path.Combine(appDir.FullName, appDirName + ".exe")))
+                        Applications.Add(new Applet(Path.Combine(appDir.FullName, appDirName + ".exe")));
+                    else
+                        foreach (var appPath in appDir.GetFiles("*.exe"))
                         {
-                            Applications.Add(new Applet(appPath.FullName));
-                            break;
+                            string appName = Regex.Replace(appPath.Name.ToLower(), "(\\.exe)|[^a-z]+", string.Empty);
+                            if (appDirName.Contains(appName) || appName.Contains(appDirName))
+                            {
+                                Applications.Add(new Applet(appPath.FullName));
+                                break;
+                            }
                         }
-                    }
                 }
                 catch (UnauthorizedAccessException) { logstream.Error($"Access to the path \"{appDir.Name}\" is denied."); }
 
             Applications.Sort(Comparer<Applet>.Create((a1, a2) => a1.Name[0].CompareTo(a2.Name[0])));
 
             settings = (Settings)JSONSerializer.Deserialize<Settings>(Settings.path);
+            foreach (var appEx in settings.Exceptions)
+                Applications.Remove(Applications.Find(a => string.Equals(a.Name, appEx, StringComparison.CurrentCultureIgnoreCase)));
+
             foreach (var appCus in settings.CustomApplications)
                 try
                 {
                     Applications[Applications.FindIndex(a => string.Equals(a.Name, appCus.Name, StringComparison.CurrentCultureIgnoreCase))] = appCus;
                 }
                 catch (ArgumentOutOfRangeException) { logstream.Error($"Custom app \"{appCus.Name}\" not found in {appCus.ExePath}"); }
-
-            foreach (var appEx in settings.Exceptions)
-                Applications.Remove(Applications.Find(a => string.Equals(a.Name, appEx, StringComparison.CurrentCultureIgnoreCase)));
         }
     }
 }
