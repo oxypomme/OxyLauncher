@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Text.RegularExpressions;
 using OxyNuggets;
 using OxyNuggets.JSON;
 
@@ -54,11 +55,14 @@ namespace OxyLauncher
                 try
                 {
                     foreach (var appPath in appDir.GetFiles())
-                        if (appPath.Extension == ".exe" && appPath.Name.ToLower().Contains(System.Text.RegularExpressions.Regex.Replace(appDir.Name.ToLower(), @"[^a-zA-Z]+", "")))
+                    {
+                        string appName = Regex.Replace(appPath.Name.ToLower(), @"[^a-zA-Z]+", "");
+                        if (appPath.Extension == ".exe" && appName.Contains(Regex.Replace(appDir.Name.ToLower(), @"[^a-zA-Z]+", "")))
                         {
                             Applications.Add(new Applet(appPath.FullName));
                             break;
                         }
+                    }
                 }
                 catch (UnauthorizedAccessException) { logstream.Error($"Access to the path \"{appDir.Name}\" is denied."); }
 
