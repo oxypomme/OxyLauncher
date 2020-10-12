@@ -54,15 +54,17 @@ namespace OxyLauncher.Models
 
         public override bool Equals(object obj)
         {
-            if (obj is Applet)
-                if (string.Equals(((Applet)obj)._name, _name, StringComparison.CurrentCultureIgnoreCase))
-                    return true;
+            if (obj is Applet &&
+                string.Equals(((Applet)obj)._name, _name, StringComparison.CurrentCultureIgnoreCase) ||
+                string.Equals(((Applet)obj)._exepath, _exepath, StringComparison.CurrentCultureIgnoreCase))
+                return true;
             return false;
         }
 
         public static bool Equals(Applet app1, Applet app2)
         {
-            if (string.Equals(app1._name, app2._name, StringComparison.CurrentCultureIgnoreCase))
+            if (string.Equals(app1._name, app2._name, StringComparison.CurrentCultureIgnoreCase) ||
+                string.Equals(app1._exepath, app2._exepath, StringComparison.CurrentCultureIgnoreCase))
                 return true;
             return false;
         }
