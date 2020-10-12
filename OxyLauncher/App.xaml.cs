@@ -72,12 +72,12 @@ namespace OxyLauncher
             foreach (var appCus in settings.CustomApplications)
                 try
                 {
-                    Applications[Applications.FindIndex(a => a.Name.ToLower() == appCus.Name.ToLower())] = appCus;
+                    Applications[Applications.FindIndex(a => string.Equals(a.Name, appCus.Name, StringComparison.CurrentCultureIgnoreCase))] = appCus;
                 }
                 catch (ArgumentOutOfRangeException) { logstream.Error($"Custom app \"{appCus.Name}\" not found in {appCus.ExePath}"); }
 
             foreach (var appEx in settings.Exceptions)
-                Applications.Remove(Applications.Find(a => a.Name.ToLower() == appEx.ToLower()));
+                Applications.Remove(Applications.Find(a => string.Equals(a.Name, appEx, StringComparison.CurrentCultureIgnoreCase)));
         }
     }
 }
